@@ -16,7 +16,6 @@
 # ENDLICENSE
 
 
-
 #   imageSegmentation.py
 #
 #   Created on: Oct 6, 2020
