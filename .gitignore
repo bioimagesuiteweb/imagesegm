@@ -28,4 +28,5 @@ docker/binary/bisweb*tgz
 various/vtk/*
 various/connatlas/*/output/*
 npm-shrinkwrap.json
-    
+dist/*
+*info

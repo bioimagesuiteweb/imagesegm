@@ -17,8 +17,8 @@ else:
     
 setuptools.setup(
     name="bisImgSegPkg",
-    version="1.0.0",
-    author="BioImageSuite Web Team",
+    version="0.5.0",
+    author="BioImageSuite Web Team (An Qu)",
     author_email="xenophon.papademetris@yale.edu",
     description="A 3D Medical Image Segmentation Package Using MONAI",
     long_description=long_description,
@@ -26,6 +26,13 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/bioimagesuiteweb/imagesegm",
     packages=setuptools.find_packages(),
+    install_requires= [
+      'nibabel',
+      'numpy',
+      'monai',
+      'torch',
+      'pytorch-lightning',
+    ],
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "Operating System :: OS Independent",
