@@ -22,7 +22,7 @@ setuptools.setup(
     author_email="xenophon.papademetris@yale.edu",
     description="A 3D Medical Image Segmentation Package Using MONAI",
     long_description=long_description,
-    license="License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    license="License :: OSI Approved :: Apache Software License",
     long_description_content_type="text/markdown",
     url="https://github.com/bioimagesuiteweb/imagesegm",
     packages=setuptools.find_packages(),
