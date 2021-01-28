@@ -38,7 +38,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     entry_points = {
-        'console_scripts': ['bisImgSeg=bisImgSeg.imageSegmentation:main']
+        'console_scripts': ['bisImgSeg=bisImgSeg.biswebMonaiSegm:main']
     },
     python_requires='>=3.6',
 )
