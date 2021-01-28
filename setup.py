@@ -16,9 +16,9 @@ else:
 
     
 setuptools.setup(
-    name="bisImgSegPkg",
+    name="biswebMonaiSegm",
     version="0.5.0",
-    author="BioImageSuite Web Team (An Qu)",
+    author="An Qu",
     author_email="xenophon.papademetris@yale.edu",
     description="A 3D Medical Image Segmentation Package Using MONAI",
     long_description=long_description,
