@@ -16,7 +16,7 @@ else:
 
     
 setuptools.setup(
-    name="imagesegmentation",
+    name="bisImgSegPkg",
     version="1.0.0",
     author="BioImageSuite Web Team",
     author_email="xenophon.papademetris@yale.edu",
@@ -26,13 +26,12 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/bioimagesuiteweb/imagesegm",
     packages=setuptools.find_packages(),
-    install_requires=install_requires,
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "Operating System :: OS Independent",
     ],
     entry_points = {
-        'console_scripts': ['bis_imagesegmentation=imagesegm.imageSegmentation:main']
+        'console_scripts': ['bisImgSeg=bisImgSeg.imageSegmentation:main']
     },
     python_requires='>=3.6',
 )

@@ -43,7 +43,7 @@ import monai.transforms as monaiTrans
 from torch.utils.data import DataLoader as torchDataloader
 
 
-import utilities.modelObjects as model_objects
+import bisImgSeg.utilities.modelObjects as model_objects
 
 from monai.inferers import sliding_window_inference
 

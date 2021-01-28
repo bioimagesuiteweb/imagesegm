@@ -24,12 +24,10 @@
 
 
 
-
+import os
 import sys
 import json
 import argparse
-import utilities.imgSegm as imgSegm;
-
 
 
 
@@ -163,7 +161,7 @@ class imageSegmentation():
 
 
 
-    def invokeAlgorithm(self,vals):
+    def invokeAlgorithm(self,vals, imgSegm):
 
         if vals.showexample:
             self.jobFileExample(vals.showexample)
@@ -209,7 +207,10 @@ def str2bool(v):
 
 
 
-if __name__ == '__main__':
+def main():
+
+    import bisImgSeg.utilities.imgSegm as imgSegm;
+
 
     parser = argparse.ArgumentParser(
         description = 'Image Segmentation(3D) Using Deep Learning Library MONAI.'
@@ -224,4 +225,16 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     anisc = imageSegmentation()
-    anisc.invokeAlgorithm(args)
+    anisc.invokeAlgorithm(args, imgSegm)
+
+
+
+
+if __name__ == '__main__':
+
+    my_path=os.path.dirname(os.path.realpath(__file__));
+    # Make sure bisImgSeg is in your path
+    n=os.path.abspath(my_path+'/..')
+    sys.path.insert(0,n);
+
+    main()
