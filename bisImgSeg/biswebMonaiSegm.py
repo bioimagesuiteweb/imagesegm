@@ -16,10 +16,10 @@
 # ENDLICENSE
 
 
-#   imageSegmentation.py
+#   biswebMonaiSegm.py
 #
 #   Created on: Oct 6, 2020
-#   Authors:   John Onofrey, An Qu, Xenophon Papademetris
+#   Authors: An Qu
 #
 
 
