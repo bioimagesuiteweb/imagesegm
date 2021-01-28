@@ -42,7 +42,7 @@ class imageSegmentation():
             "name": "imageSegmentation",
             "description": "Image Segmentation(3D) Using Deep Learning Library MONAI.",
             "version": "1.0",
-            "authors": "John Onofrey, An Qu, Xenophon Papademetris"
+            "authors": "An Qu"
         }
 
 
