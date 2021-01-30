@@ -1,0 +1,34 @@
+{
+    "module" : "imageSegmentation",
+    "params" : {
+		"inputpath": "/path/to/input.csv. An example of input.csv file can be found in imagesegm/inputExample.csv",
+                "outputmodelpath": "path/to/output/folder/",
+                "gpu_device": 0,
+                "defaulttransformation": {
+					  "patch_size": [64, 64, 32],
+					  "spacing": [0.2, 0.2, 0.2]
+                                          },
+                "model": {"name": "UNet3d",
+                          "normalization": "BATCH",
+                          "num_res_units": 2,
+                          "strides": [2, 2, 2],
+			  "channels": [16, 32, 64, 128]
+                         },
+                "train": {
+			  "augmentation": {
+					   "RandRotated": {"keys":["IMAGE", "SEGM"], "mode": ["bilinear", "nearest"],
+			                                   "range_x":5, "range_y":5, "range_z":5, "prob":0.1},
+					   "RandZoomd": {"keys": ["IMAGE", "SEGM"], "mode": ["trilinear", "trilinear"],
+							 "align_corners": [true, true], "prob": 0.2, "min_zoom": 0.85, "max_zoom": 1.15}, 
+					   "ThresholdIntensityd": {"keys": ["SEGM"], "threshold": 0.5}, 
+					   "ThresholdIntensityd": {"keys": ["SEGM"], "threshold": 0.5, "above": false, "cval": 1}
+					  },
+                         "max_epochs": 14,
+                         "check_val_every_n_epoch": 12,
+                         "batch_size": 32
+                         },
+                "test": {
+                         "postprocessing": true
+                	}
+                }
+}
