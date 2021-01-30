@@ -2,7 +2,7 @@
     "module" : "imageSegmentation",
     "params" : {
 		"inputpath": "/path/to/input.csv. An example of input.csv file can be found in imagesegm/inputExample.csv",
-                "outputmodelpath": "path/to/output/folder/",
+                "outputmodelpath": "/path/to/output/folder/",
                 "gpu_device": 0,
                 "defaulttransformation": {
 					  "patch_size": [64, 64, 32],
