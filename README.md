@@ -82,7 +82,7 @@ python3 biswebMonaiSegm.py -h
 python3 biswebMonaiSegm.py --showexample full(or short)
 </code>
 
-<p>You can also check the jobFileExample.json in the <samp>imagesegm</samp> folder for reference and design it as you need by following the requirements in the <samp>--showexample</samp> flag.</p>
+<p>You can also check the jobFileExample.json and one of its inputs <samp>inputExample.csv</samp> in the <samp>imagesegm</samp> folder for reference and design it as you need by following the requirements in the <samp>--showexample</samp> flag.</p>
 <p>Regarding the <samp>--debug</samp> flag, it is defaultly set as True and will print the logging messages during the learning/predicting process. You can turn it off by specifying False after this flag.</p>
 
 <b>3. Monitor the learning process</b>
