@@ -93,6 +93,6 @@ tensorboard --logdir outputmodelpath
 
 <p>Where the <samp>outputmodelpath</samp> should be specified in your jobfile. Then search <samp>http://localhost:6006/</samp> in your browser. You will see the statistics and visualizations in this webpage. For more information on Tensorboard, please check <a href="https://github.com/tensorflow/tensorboard">Tensorboard github.</a> </p>
 
-<b>Results</b>
+<b>4. Find your results</b>
 <p>The trained model can be found in <samp>outputmodelpath/saved_model/</samp>, where the <samp>outputmodelpath<samp> should be specified in your jobfile. </p>
 <p>The segmented results can be found in <samp>outputmodelpath/results/.</samp></p>
