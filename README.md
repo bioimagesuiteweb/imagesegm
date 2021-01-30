@@ -96,3 +96,5 @@ tensorboard --logdir outputmodelpath
 <b>4. Find your results</b>
 <p>The trained model can be found in <samp>outputmodelpath/saved_model/</samp>, where the <samp>outputmodelpath</samp> should be specified in your jobfile. </p>
 <p>The segmented results can be found in <samp>outputmodelpath/results/</samp>.</p>
+
+<p>Author: An Qu</p>
