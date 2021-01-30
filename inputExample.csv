@@ -1,0 +1,11 @@
+IMAGE,SEGM,DATA_SPLIT
+/path/to/training/image1.nii.gz,/path/to/training/segment1(binaryMask).nii.gz,Training
+/path/to/training/image2.nii.gz,/path/to/training/segment2(binaryMask).nii.gz,Training
+/path/to/training/image3.nii.gz,/path/to/training/segment3(binaryMask).nii.gz,Training
+/path/to/training/image4.nii.gz,/path/to/training/segment4(binaryMask).nii.gz,Training
+/path/to/training/image5.nii.gz,/path/to/training/segment5(binaryMask).nii.gz,Training
+/path/to/validation/image1.nii.gz,/path/to/validation/segment1(binaryMask).nii.gz,Validation
+/path/to/validation/image2.nii.gz,/path/to/validation/segment2(binaryMask).nii.gz,Validation
+/path/to/validation/image3.nii.gz,/path/to/validation/segment3(binaryMask).nii.gz,Validation
+/path/to/Testing/image1.nii.gz,/path/to/Testing/segment1(binaryMask).nii.gz(if testing segment exists, Dice score and Hausdorff Distance will be calculated for evaluation purpose),Testing
+/path/to/Testing/image2.nii.gz,,Testing
