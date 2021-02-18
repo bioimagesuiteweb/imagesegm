@@ -109,17 +109,22 @@ class TRANSFORMATION:
             if 'orientation' in dt_dict.keys():
                 self.orientation = dt_dict['orientation'].upper()
 
-            try:
-                # TODO: 2D framework---------------------------------------------------------------------------------------------------------
-                self.patch_size = tuple(dt_dict['patch_size'])
-                # TODO: 2D framework---------------------------------------------------------------------------------------------------------
+            if status == 'train':
+                try:
+                    # TODO: 2D framework---------------------------------------------------------------------------------------------------------
+                    self.patch_size = tuple(dt_dict['patch_size'])
+                    # TODO: 2D framework---------------------------------------------------------------------------------------------------------
+                except:
+                    print("In training mode, patch_size must be defined in the json file. Please double check." )
+                    raise ValueError
 
+            try:
                 self.spacing = tuple(dt_dict['spacing'])
                 if len(self.keys) == 1:
                     self.Spacingd['mode'] = [self.Spacingd['mode'][0]]
                     self.Spacingd['padding_mode'] = [self.Spacingd['padding_mode'][0]]
             except:
-                print("patch_size / spacing must be defined in the json file. Please double check." )
+                print("Spacing must be defined in the json file. Please double check." )
                 raise ValueError
 
             fix_keys = ['orientation', 'spacing', 'patch_size']
@@ -632,7 +637,7 @@ def predictionAndEvaluation(params, test_loader, device, model):
 
 
 
-def imageSegmentation(paramfile, debug):
+def imageSegmentation(paramfile, debug, recon=False):
     # ## Verify System Setup
     # Check torch and CUDA on the system.
     if debug:
@@ -676,11 +681,16 @@ def imageSegmentation(paramfile, debug):
     if 'test' in paramfile.keys():
 
         # load the last checkpoint of the trained model
-        lastcheckpoint = torch.load(os.path.join(paramfile['outputmodelpath'],'saved_model','last.ckpt'))
+        try:
+            lastcheckpoint = torch.load(os.path.join(paramfile['outputmodelpath'],'saved_model','last.ckpt'))
+        except:
+            lastcheckpoint = torch.load(os.path.join(paramfile['outputmodelpath'], 'last.ckpt'))
         MODEL.load_state_dict(lastcheckpoint['state_dict'])
 
-
-        OUTPUT_PATH = os.path.join(paramfile['outputmodelpath'],'results')
+        if recon:
+            OUTPUT_PATH = os.path.join(os.path.dirname(paramfile['inputpath']), 'reconResult')
+        else:
+            OUTPUT_PATH = os.path.join(paramfile['outputmodelpath'],'results')
         Path(OUTPUT_PATH).mkdir(parents=True, exist_ok=True)
 
 

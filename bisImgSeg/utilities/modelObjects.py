@@ -88,7 +88,7 @@ class UNet(pytorch_lightning.LightningModule):
             'up_kernel_size': 3,
             'num_res_units': 0,
             'act': 'PRELU',
-            'norm': Norm.INSTANCE,
+            'norm': Norm.BATCH,
             'dropout': 0,
             # functions' parameters
             'lossfunction': None,
