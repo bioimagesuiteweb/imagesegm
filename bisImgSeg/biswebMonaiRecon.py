@@ -245,7 +245,7 @@ def main():
     parser.add_argument('--debug', help='Toggles debug logging.', default=True, type=str2bool)
     parser.add_argument('--showexample', help='(optional) Produce an example input jobfile. \
                          Please specify either full or short after this flag. \
-                         Short example will only display the minimum required parameters in the jobfile.')
+                         Short example will only display the minimum required parameters in the jobfile. You can find an example file, reconJobFileExample.json, in imagesegm/ folder.')
 
     args = parser.parse_args()
 
