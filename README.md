@@ -99,7 +99,7 @@ tensorboard --logdir outputmodelpath
 
 
 <h3>IMAGE RECONSTRUCTION</h3>
-<p>We also provide image reconstruction function， which is used for quickly reconstructing a single input image with your trained deep learning network. For detailed information of the image reconstruction function, you can use the command below:</p>
+<p>We also provide image reconstruction function, which is used for quickly reconstructing a single input image with your trained deep learning network. For detailed information of the image reconstruction function, you can use the command below:</p>
 <code>
 python3 biswebMonaiRecon.py --showexample full(or short)
 </code>
