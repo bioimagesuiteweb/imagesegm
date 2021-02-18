@@ -97,4 +97,18 @@ tensorboard --logdir outputmodelpath
 <p>The trained model can be found in <samp>outputmodelpath/saved_model/</samp>, where the <samp>outputmodelpath</samp> should be specified in your jobfile. </p>
 <p>The segmented results can be found in <samp>outputmodelpath/results/</samp>.</p>
 
+
+<h3>IMAGE RECONSTRUCTION</h3>
+<p>We also provide image reconstruction function， which is used for quickly reconstructing a single input image with your trained deep learning network. For detailed information of the image reconstruction function, you can use the command below:</p>
+<code>
+python3 biswebMonaiRecon.py --showexample full(or short)
+</code>
+
+<p>Briefly, you can use this command as below:</p>
+<code>
+python3 biswebMonaiRecon.py -i /path/to/an/input/image.nii.gz -o /output/folder/ -jf /path/to/reconJobFile.json 
+</code>
+
+<p>There is an example reconJobFile.json, reconJobFileExample.json, available in the <samp>imagesegm/</samp> folder. You can design it as you need by following the requirements in the <samp>--showexample</samp> flag.</p>
+
 <p>Author: An Qu</p>
