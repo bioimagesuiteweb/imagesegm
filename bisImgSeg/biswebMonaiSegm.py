@@ -53,7 +53,7 @@ class imageSegmentation():
                         "module" : "imageSegmentation",
                         "params" :
                         {
-            		        "inputpath": "(string) path of input csv file. Three colums are required with the unchangable headers(top) , 'IMAGE', 'SEGM' and 'DATA_SPLIT'. 'IMAGE' and 'SEGM' colums should be filled with image and mask pathes. The 'DATA_SPLIT' colum should only contain 'Training', 'Validation' and 'Testing' keywords.",
+            		        "inputpath": "(string) path of input csv file. You can find an example file, inputExample.csv, in the imagesegm/ folder. Three colums are required with the unchangable headers(top) , 'IMAGE', 'SEGM' and 'DATA_SPLIT'. 'IMAGE' and 'SEGM' colums should be filled with image and mask pathes. The 'DATA_SPLIT' colum should only contain 'Training', 'Validation' and 'Testing' keywords.",
                             "outputmodelpath": "(string) path of the output model folder.",
                             "cachepath": "(OPTINAL string) path of the data cache directory.",
                             "gpu_device": "(integer) the ID of GPU you want to use for the training/testing.",
@@ -61,7 +61,7 @@ class imageSegmentation():
                             {
         					  "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(dictionary) Default preprocessing for the input training, validation and testing data, which includes 1)changing the input images' orientation into the specified direction, 2)resampling input images into the specified pixel dimenstion, and 3) applying intensity normalization to the input images. For the training images, a random crop function to extract random patches from the original images will be applied.",
         					  "orientation": "(OPTINAL string) reoriente images to the direction you specified here. Default to LPS.",
-                              "patch_size": "(list of float number) the spatial size of the cropped patches.",
+                              "patch_size": "(TRAIN MODE REQUIRED list of float number) the spatial size of the cropped patches.",
                               "spacing": "(list of float number) pixel dimension that is used to resample the input images."
                              },
 
@@ -71,10 +71,10 @@ class imageSegmentation():
                 			  "name": "(string) name of the network. Now only UNet3d is available. For more information/options, please check MOONAI UNet, https://docs.monai.io/en/latest/networks.html#monai.networks.nets.UNet",
                 			  "in_channels": "(OPTIONAL integer) number of input channels.",
                 			  "out_channels": "(OPTIONAL integer) number of output channels.",
-                              "normalization": "(OPTIONAL string) Feature normalization type and arguments. Defaults to BATCH",
-                              "num_res_units": "(OPTIONAL integer) Number of residual units. Defaults to 2",
-                              "strides": "(OPTIONAL list of integer) convolution stride.",
-                			  "channels": "(OPTIONAL list of integer) sequence of channels. TOP block first.",
+                              "normalization": "(OPTIONAL string) Feature normalization type and arguments. Default to BATCH",
+                              "num_res_units": "(OPTIONAL integer) Number of residual units. Default to 2",
+                              "strides": "(OPTIONAL list of integer) convolution stride. Default to [2, 2, 2]",
+                			  "channels": "(OPTIONAL list of integer) sequence of channels. TOP block first. Defalt to [16, 32, 64, 128]",
                 			  "lossfunction":
                               {
                         		  "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(OPTIONAL dictionary) The loss function you choose for your model. Default to MONAI DiceLoss function and the example usage is shown as below. For more informatin/options, please check MONAI Segmentation Losses, https://docs.monai.io/en/latest/losses.html#module-monai.losses.",
@@ -125,13 +125,13 @@ class imageSegmentation():
                "module" : "imageSegmentation",
                "params" :
                {
-                   "inputpath": "(string) path of input csv file. Three colums are required with the unchangable headers(top) , 'IMAGE', 'SEGM' and 'DATA_SPLIT'. 'IMAGE' and 'SEGM' colums should be filled with image and mask pathes. The 'DATA_SPLIT' colum should only contain 'Training', 'Validation' and 'Testing' keywords.",
+                   "inputpath": "(string) path of input csv file. You can find an example file, inputExample.csv, in the imagesegm/ folder. Three colums are required with the unchangable headers(top) , 'IMAGE', 'SEGM' and 'DATA_SPLIT'. 'IMAGE' and 'SEGM' colums should be filled with image and mask pathes. The 'DATA_SPLIT' colum should only contain 'Training', 'Validation' and 'Testing' keywords.",
                    "outputmodelpath": "(string) path of the output model folder.",
                    "gpu_device": "(integer) the ID of GPU you want to use for the training/testing.",
                    "defaulttransformation":
                    {
         	   	      "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(dictionary) Default preprocessing for the input training, validation and testing data, which includes 1)changing the input images' orientation into the specified direction, 2)resampling input images into the specified pixel dimenstion, and 3) applying intensity normalization to the input images. For the training images, a random crop function to extract random patches from the original images will be applied.",
-                      "patch_size": "(list of float number) the spatial size of the cropped patches.",
+                      "patch_size": "(TRAIN MODE REQUIRED list of float number) the spatial size of the cropped patches.",
                       "spacing": "(list of float number) pixel dimension that is used to resample the input images."
                    },
                    "model":
@@ -220,7 +220,8 @@ def main():
     parser.add_argument('--debug', help='Toggles debug logging.', default=True, type=str2bool)
     parser.add_argument('--showexample', help='(optional) Produce an example input jobfile. \
                          Please specify either full or short after this flag. \
-                         Short example will only display the minimum required parameters in the jobfile.')
+                         Short example will only display the minimum required parameters in the jobfile. \
+                         You can find an example file, jobFileExample.json, in the imagesegm/ folder.')
 
     args = parser.parse_args()
 

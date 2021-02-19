@@ -1,0 +1,14 @@
+{
+    "module" : "imageReconstruction",
+    "params" : {
+                "outputmodelpath": "/tensor2/an/bisweb/monai/ventricle/test",
+                "gpu_device": 0,
+                "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "The model dictionary below is based on the model dictionary specified in the jobFileExample.json. You will need to keep the model dictionary consistent in your model training and testing(image reconstruction)."
+                "model": {"name": "UNet3d",
+                          "normalization": "BATCH",
+                          "num_res_units": 2,
+                          "strides": [2, 2, 2],
+			  "channels": [16, 32, 64, 128]
+                         }
+                }
+}

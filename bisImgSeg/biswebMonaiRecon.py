@@ -1,0 +1,265 @@
+# LICENSE
+#
+# _This file is Copyright 2018 by the Image Processing and Analysis Group (BioImage Suite Team). Dept. of Radiology & Biomedical Imaging, Yale School of Medicine._
+#
+# BioImage Suite Web is licensed under the Apache License, Version 2.0 (the "License");
+#
+# - you may not use this software except in compliance with the License.
+# - You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+#
+# __Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.__
+#
+# ENDLICENSE
+
+
+#   biswebMonaiSegm.py
+#
+#   Created on: Oct 6, 2020
+#   Authors: An Qu
+#
+
+
+
+import os
+import sys
+import csv
+import json
+import argparse
+import nibabel as nib
+
+
+
+class imageReconstruction():
+
+    def __init__(self):
+        super().__init__();
+        self.name='imageReconstruction';
+
+    def createDescription(self):
+        return {
+            "name": "imageReconstruction",
+            "description": "Image Reconstruction(3D) Using Trained Deep Learning Library.",
+            "version": "1.0",
+            "authors": "An Qu"
+        }
+
+
+
+    def jobFileExample(self, ex_type):
+        if ex_type == 'full':
+            example = """ {
+                        "module" : "imageReconstruction",
+                        "params" :
+                        {
+                            "outputmodelpath": "(string) path of the trained deep learning network.",
+                            "gpu_device": "(integer) the ID of GPU you want to use for the reconstruction.",
+                            "defaulttransformation":
+                            {
+        					  "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(dictionary) Default preprocessing for the reconstructed data, which includes 1)changing the input images' orientation into the specified direction, 2)resampling input images into the specified pixel dimenstion, and 3) applying intensity normalization to the input images.",
+        					  "orientation": "(OPTINAL string) reoriente images to the direction you specified here. Default to LPS.",
+                              "spacing": "(OPTIONAL list of float number) pixel dimension that is used to resample the input images."
+                             },
+                            "model":
+                            {
+                			  "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(dictionary) Define a model for the reconstruction. For more information/options, please check MONAI Nets, https://docs.monai.io/en/latest/networks.html#nets.",
+                			  "IMPORTANT-NOTE-DO-NOT-INCLUDE-IN-JOBFILE": "The parameters of your model is NECESSARILY REQUIRED! Only if your model was trained with biswebMonaiSegm by using its default settings, you can skip the default setted parameters here.",
+                              "name": "(string) name of the network. Now only UNet3d is available. For more information/options, please check MOONAI UNet, https://docs.monai.io/en/latest/networks.html#monai.networks.nets.UNet",
+                			  "in_channels": "(OPTIONAL integer) number of input channels.",
+                			  "out_channels": "(OPTIONAL integer) number of output channels.",
+                              "normalization": "(OPTIONAL string) Feature normalization type and arguments. Default to BATCH",
+                              "num_res_units": "(OPTIONAL integer) Number of residual units. Default to 2",
+                              "strides": "(OPTIONAL list of integer) convolution stride. Default to [2, 2, 2]",
+                			  "channels": "(OPTIONAL list of integer) sequence of channels. TOP block first. Default to [16, 32, 64, 128]",
+                			  "lossfunction":
+                              {
+                        		  "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(OPTIONAL dictionary) The loss function you choose for your model. Default to MONAI DiceLoss function and the example usage is shown as below. For more informatin/options, please check MONAI Segmentation Losses, https://docs.monai.io/en/latest/losses.html#module-monai.losses.",
+    	                          "functionname": "(string) Function name is required if you specified a loss function.",
+                        		  "to_onehot_y": "(OPTIONAL) Please check the MONAI Loss Function document and the defination of each parameter. Parameters not specified will use the default value in the document.",
+                        		  "softmax": "(OPTIONAL) Please check the MONAI Loss Function document and the defination of each parameter. Parameters not specified will use the default value in the document."
+                              },
+                			  "optimfunction":
+                              {
+    	 		                  "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(OPTIONAL dictionary) The optimizer you choose for your model. Default to torch.optim.Adam. For more informatin/options, please check TORCH.OPTIM, https://pytorch.org/docs/stable/optim.html#module-torch.optim."
+                    	  	  }
+                            },
+                            "test":
+                            {
+                    		   "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(dictionary) functions and parameters for your testing procedure. If the key 'test' is specified in the 'params' dict, the module will perform the testing procedure on your testing data with the model you specified above.",
+
+                			   "batch_size": "(OPTIONAL integer) The number of testing examples per batch to load. Default to 1.",
+                               "postprocessing": "(OPTIONAL boolean) Whether or not to perform post processing function(MONAI KeepLargestConnectedComponent, https://docs.monai.io/en/latest/transforms.html#keeplargestconnectedcomponent). Default to true."
+                    	       }
+                            }
+                        }"""
+
+        elif ex_type == "short":
+
+            example = """ {
+                        "module" : "imageReconstruction",
+                        "params" :
+                        {
+                            "outputmodelpath": "(string) path of the trained deep learning network.",
+                            "gpu_device": "(integer) the ID of GPU you want to use for the reconstruction.",
+                            "model":
+                            {
+                			  "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(dictionary) Define a model for the reconstruction. For more information/options, please check MONAI Nets, https://docs.monai.io/en/latest/networks.html#nets.",
+                			  "IMPORTANT-NOTE-DO-NOT-INCLUDE-IN-JOBFILE": "The parameters of your model is NECESSARILY REQUIRED! Only if your model was trained with biswebMonaiSegm by using its default settings, you can skip the default setted parameters here.",
+                              "name": "(string) name of the network. Now only UNet3d is available. For more information/options, please check MOONAI UNet, https://docs.monai.io/en/latest/networks.html#monai.networks.nets.UNet",
+                			  "in_channels": "(OPTIONAL integer) number of input channels.",
+                			  "out_channels": "(OPTIONAL integer) number of output channels.",
+                              "normalization": "(OPTIONAL string) Feature normalization type and arguments. Default to BATCH",
+                              "num_res_units": "(OPTIONAL integer) Number of residual units. Default to 2",
+                              "strides": "(OPTIONAL list of integer) convolution stride. Default to [2, 2, 2]",
+                			  "channels": "(OPTIONAL list of integer) sequence of channels. TOP block first. Default to [16, 32, 64, 128]",
+                			  "lossfunction":
+                              {
+                        		  "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(OPTIONAL dictionary) The loss function you choose for your model. Default to MONAI DiceLoss function and the example usage is shown as below. For more informatin/options, please check MONAI Segmentation Losses, https://docs.monai.io/en/latest/losses.html#module-monai.losses.",
+    	                          "functionname": "(string) Function name is required if you specified a loss function.",
+                        		  "to_onehot_y": "(OPTIONAL) Please check the MONAI Loss Function document and the defination of each parameter. Parameters not specified will use the default value in the document.",
+                        		  "softmax": "(OPTIONAL) Please check the MONAI Loss Function document and the defination of each parameter. Parameters not specified will use the default value in the document."
+                              },
+                			  "optimfunction":
+                              {
+    	 		                  "DESCRIPTION-DO-NOT-INCLUDE-IN-JOBFILE": "(OPTIONAL dictionary) The optimizer you choose for your model. Default to torch.optim.Adam. For more informatin/options, please check TORCH.OPTIM, https://pytorch.org/docs/stable/optim.html#module-torch.optim."
+                    	  	  }
+                            }
+                            }
+                        }"""
+
+
+
+
+        else:
+            print("Please specify 'full' or 'short' after the showexample flag.")
+            print("Short example will only display the minimum required parameters in the jobfile.")
+            return
+
+
+        example_json = json.dumps(json.loads(example), indent=4)
+        print(example_json)
+
+
+
+
+    def createTempCSV(self, vals):
+
+        oup = os.path.dirname(vals.outputPath)
+        tempjobfile = {}
+        csvtemp = [['IMAGE', 'SEGM', 'DATA_SPLIT']]
+
+        csvtemp.append([vals.inputImage, '', 'Testing'])
+        fname = oup + "/temporaryFile.csv"
+
+        with open(fname, 'w') as f:
+            fWriter = csv.writer(f, lineterminator="\n")
+            fWriter.writerows(csvtemp)
+
+        return fname
+
+
+
+
+
+    def invokeAlgorithm(self,vals, imgSegm):
+
+        if vals.showexample:
+            self.jobFileExample(vals.showexample)
+            return True
+
+        else:
+            try:
+                with open(vals.jobfile) as jf:
+                    jfile = json.load(jf)
+                    if jfile['module'] != self.name:
+                        print ("Double check if the module name of the jobfile corrects!")
+                        raise ValueError
+            except:
+                e = sys.exc_info()[0]
+                print('---- Failed to load the jobfile ----',e);
+                return False
+
+
+            jfile['params']['inputpath'] = self.createTempCSV(vals)
+            jfile['params']['test'] = {}
+
+            if 'defaulttransformation' in jfile['params'].keys():
+                if 'spacing' in jfile['params']['defaulttransformation'].keys():
+                    pass
+                else:
+                    # TODO: 2D/4D pixdim---------------------------------------------------
+                    jfile['params']['defaulttransformation']['spacing'] = list(nib.load(vals.inputImage).header['pixdim'][1:4])
+                    # TODO: 2D/4D pixdim---------------------------------------------------
+            else:
+                jfile['params']['defaulttransformation'] = {}
+                # TODO: 2D/4D pixdim---------------------------------------------------
+                jfile['params']['defaulttransformation']['spacing'] = list(nib.load(vals.inputImage).header['pixdim'][1:4])
+                # TODO: 2D/4D pixdim---------------------------------------------------
+
+            import IPython
+            IPython.embed()
+            try:
+                imgSegm.imageSegmentation(jfile['params'], vals.debug, recon=True)
+
+            except:
+                os.remove(jfile['params']['inputpath'])
+                e = sys.exc_info()[0]
+                print('---- Failed to invoke algorithm ----',e);
+                return False
+
+            os.remove(jfile['params']['inputpath'])
+            return True
+
+
+
+
+def str2bool(v):
+    if isinstance(v, bool):
+       return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
+
+
+
+
+def main():
+
+    import bisImgSeg.utilities.imgSegm as imgSegm;
+
+
+    parser = argparse.ArgumentParser(
+        description = 'Image Reconstruction Based on Trained Deep Learning Library.'
+    )
+
+    parser.add_argument('-i', '--inputImage', help='Input image to be reconstructed.')
+    parser.add_argument('-o', '--outputPath', help='Output path to store the reconstructed image.')
+    parser.add_argument('-jf', '--jobfile', help='User-defined parameter file for image reconstruction.')
+    parser.add_argument('--debug', help='Toggles debug logging.', default=True, type=str2bool)
+    parser.add_argument('--showexample', help='(optional) Produce an example input jobfile. \
+                         Please specify either full or short after this flag. \
+                         Short example will only display the minimum required parameters in the jobfile. You can find an example file, reconJobFileExample.json, in imagesegm/ folder.')
+
+    args = parser.parse_args()
+
+    anisc = imageReconstruction()
+    anisc.invokeAlgorithm(args, imgSegm)
+
+
+
+
+if __name__ == '__main__':
+
+    my_path=os.path.dirname(os.path.realpath(__file__));
+    # Make sure bisImgSeg is in your path
+    n=os.path.abspath(my_path+'/..')
+    sys.path.insert(0,n);
+
+    main()
